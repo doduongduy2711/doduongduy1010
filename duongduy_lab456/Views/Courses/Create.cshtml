@@ -1,9 +1,4 @@
-﻿@model duongduy_lab456.ViewModels.CourseViewModel
-    ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<h2>Create</h2>
+﻿@using (Html.BeginForm("Create","Coures"))
 
 <form>
     <div class="form-group">
@@ -18,5 +13,11 @@
         @Html.LabelFor(m => m.Time)
         @Html.TextBoxFor(m => m.Time, new { @class = "form-control" })
     </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Category)
+        @Html.DropDownListFor(m => m.Category,
+        new SelectList(Model.Categories,"Id", "Name"),"", new { @class = "form-control" })
+    </div>
+    <button type="submit" value="Save" claas="btn btn-primary">Save</button>
 </form>
 
