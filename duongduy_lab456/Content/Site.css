@@ -1,4 +1,5 @@
-﻿﻿body {
+﻿  
+﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -23,16 +24,8 @@ textarea {
     max-width: 280px;
 }
 
-/*thay doi thanh menu*/ 
+/*Thay doi giao dien thanh menu*/
 .navbar-inverse {
-    background-color: #293ba9;
-    border-color: #080808;
+    background-color: white;
+    border-color: #fbf6f6;
 }
-
-     .navbar-inverse .navbar-nav > li > a {
-         color:white;
-     }
-
-    .navbar-inverse .navbar-brand{
-        color:white;
-    }
