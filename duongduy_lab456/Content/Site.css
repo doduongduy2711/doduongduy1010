@@ -1,5 +1,4 @@
-﻿  
-﻿body {
+﻿  body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -26,7 +25,6 @@ select,
 textarea {
     max-width: 280px;
 }
-
 /*Thay doi giao dien thanh menu*/
 .navbar-inverse {
     background-color: #d41d50;
@@ -50,6 +48,7 @@ textarea {
         margin-bottom: 30px;
     }
 .course > li .date {
+        padding:10px;
            text-align: center;
             background-color: #d41d50;
             color: white;

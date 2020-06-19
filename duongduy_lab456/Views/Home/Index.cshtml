@@ -17,54 +17,77 @@
                         </div>
                     </div>
                     <div class="details">
-                        <span class="lecturer">
-                            @course.Lecturer.Name
+                        <div>
+                            <span class="lecturer">
+                                @course.Lecturer.Name
+                                @if (Model.ShowAction)
+                                {
+                                        <button style="border-color:white; color:blue" class="btn btn-default btn-link js-toggle-follow" data-user-id="@course.LecturerId">Follow</button>
+
+                                }
+                            </span>
+                        </div>
+                        <div>
+                            <span class="category">
+                                @course.Category.Name
+                            </span>
                             @if (Model.ShowAction)
                             {
-                                <button class="btn btn-default btn-sm js-toggle-follow" data-user-id="@course.LecturerId">Follow</button>
+                                
+                                    <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
+                                
+
                             }
-                        </span>
-                        <span class="category">
-                            @course.Category.Name
-                        </span>
-                        @if (Model.ShowAction)
-                        {
-                            <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
-                        }
+
+                        </div>
+
                     </div>
                 </li>
             }
         </ul>
-    </div>
-</form>
-
-    @section scripts
+        </div>
+    </form>
+        @section scripts
 {
-        <script>
-            $(document).ready(function () {
-                $(".js-toggle-attendance").click(function (e) {
-                    var button = $(e.target);
-                    $.post("/api/attendances", { courseId: button.attr("data-course-id") })
-                        .done(function () {
+            <script>
+        $(document).ready(function () {
+            $(".js-toggle-attendance").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/attendances", { courseId: button.attr("data-course-id") })
+                    .done(function () {
+                        if (button.text() == "Going?") {
                             button
-                                .removeClass("btn-default")
-                                .addClass("btn-info")
-                                .text("Going");
-                        })
-                        .fail(function () {
-                            alert("Something failed!");
-                        });
-                });
-                $(".js-toggle-follow").click(function (e) {
-                    var button = $(e.target);
-                    $.post("/api/followings", { followeeId: button.attr("data-user-id") })
-                        .done(function () {
-                            button.text("Following");
-                        })
-                        .fail(function () {
-                            alert("Something failed!");
-                        });
-                });
+                           .removeClass("btn-default")
+                           .addClass("btn-info")
+                           .text("Going");
+                        }
+                        else {
+                            button
+                           .removeClass("btn-info")
+                           .addClass("btn-default")
+                           .text("Going");
+                        }
+
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
             });
-        </script>
-    }
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        if (button.text() == "Follow") {
+                            button.text("Following");
+                        }
+                        else {
+                            button.text("Follow")
+                        }
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            });
+        });
+            </script>
+        }

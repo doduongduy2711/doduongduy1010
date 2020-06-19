@@ -24,7 +24,6 @@ namespace duongduy_lab456.Controllers
                            .Where(c => c.DateTime > DateTime.Now);
             var viewModel = new CoursesViewModel
             {
-
                 UpcomingCourses = upcomingCourses,
                 ShowAction = User.Identity.IsAuthenticated
             };

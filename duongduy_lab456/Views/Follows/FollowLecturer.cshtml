@@ -1,0 +1,20 @@
+﻿@model duongduy_lab456.ViewModels.CoursesViewModel
+@{
+    ViewBag.Title = "FollowLecturer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>FollowLecturer</h2>
+
+<ul>
+    @foreach (var follow in Model.Follows)
+    {
+        <li>
+            <div>
+                <span style="font-size:20px">
+                    @follow.Name
+                </span>
+            </div>
+        </li>
+    }
+</ul>

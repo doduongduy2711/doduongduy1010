@@ -1,10 +1,13 @@
 ﻿using duongduy_lab456.DTOs;
 using duongduy_lab456.Models;
+using duongduy_lab456.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace duongduy_lab456.Controllers
@@ -21,18 +24,33 @@ namespace duongduy_lab456.Controllers
         {
             var userId = User.Identity.GetUserId();
             if (_dbContext.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == followingDto.FolloweeId))
-                return BadRequest("Following already exists!");
-
-            var following = new Following
             {
-                FollowerId = userId,
-                FolloweeId = followingDto.FolloweeId
-            };
+                var following = new Following
+                {
+                    FollowerId = userId,
+                    FolloweeId = followingDto.FolloweeId
+                };
 
-            _dbContext.Followings.Add(following);
-            _dbContext.SaveChanges();
+                _dbContext.Followings.Attach(following);
+                _dbContext.Followings.Remove(following);
+                _dbContext.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                var following = new Following
+                {
+                    FollowerId = userId,
+                    FolloweeId = followingDto.FolloweeId
+                };
 
-            return Ok();
+                _dbContext.Followings.Add(following);
+                _dbContext.SaveChanges();
+
+                return Ok();
+            }
+
         }
+
     }
 }

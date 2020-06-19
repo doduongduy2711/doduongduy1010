@@ -7,7 +7,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
 namespace duongduy_lab456.Controllers
 {
     public class CoursesController : Controller
@@ -21,10 +20,11 @@ namespace duongduy_lab456.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            var viewModel = new CourseViewModel
-            {
-                Categories = _dbContext.Categories.ToList()
-            };
+           var viewModel = new CourseViewModel
+                {
+                Categories = _dbContext.Categories.ToList(),
+               Heading = "Add Course"
+           };
             return View(viewModel);
         }
         [Authorize]
@@ -37,6 +37,7 @@ namespace duongduy_lab456.Controllers
                 viewModel.Categories = _dbContext.Categories.ToList();
                 return View("Create", viewModel);
             }
+
             var course = new Course
             {
                 LecturerId = User.Identity.GetUserId(),
@@ -62,6 +63,7 @@ namespace duongduy_lab456.Controllers
 
             var viewModel = new CoursesViewModel
             {
+                
                 UpcomingCourses = courses,
                 ShowAction = User.Identity.IsAuthenticated
             };
@@ -93,9 +95,35 @@ namespace duongduy_lab456.Controllers
                 Date = course.DateTime.ToString("dd/M/yyyy"),
                 Time = course.DateTime.ToString("HH:mm"),
                 Category = course.CategoryId,
-                Place = course.Place
+                Place = course.Place,
+                Heading = "Edit Course",
+                Id = course.Id
             };
             return View("Create", viewModel);
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(CourseViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                viewModel.Categories = _dbContext.Categories.ToList();
+                return View("Create", viewModel);
+            }
+
+
+            var userId = User.Identity.GetUserId();
+            var course = _dbContext.Courses.Single(c => c.Id == viewModel.Id && c.LecturerId == userId);
+
+            course.Place = viewModel.Place;
+            course.DateTime = viewModel.GetDateTime();
+            course.CategoryId = viewModel.Category;
+
+            _dbContext.SaveChanges();
+
+
+            return RedirectToAction("Index", "Home");
         }
     }
 
